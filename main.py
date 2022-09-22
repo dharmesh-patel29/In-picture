@@ -55,10 +55,13 @@ for pt in zip(*loc[::-1]):
 
 # function to display the image containing object when needed
 def dispObj():
-    cv2.imshow('Object found', im_rgb)
+    
+    # resizing the output image according to the MDcard
+    ims = cv2.resize(im_rgb, (480,480))
+    cv2.imshow('Object found', ims)
 
 
-#dispObj()
+dispObj()
 
 # below code stops the python kernel from crashing
 cv2.waitKey(0) 
