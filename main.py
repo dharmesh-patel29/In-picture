@@ -52,3 +52,10 @@ loc = np.where( res>=threshold)  # setting condition
 # also making boxes inside the original images (in-place)
 for pt in zip(*loc[::-1]):
     cv2.rectangle(im_rgb, pt, (pt[0]+w, pt[1]+h), (0,255,255), 2)
+
+cv2.imshow('Object found', im_rgb )
+
+# below code stops the python kernel from crashing
+cv2.waitKey(0) 
+
+cv2.destroyAllWindows()
