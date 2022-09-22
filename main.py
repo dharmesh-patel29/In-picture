@@ -31,3 +31,11 @@ w, h = temp.shape[::-1]
 
 # matching template
 res = cv2.matchTemplate(im_gray, temp, cv2.TM_CCOEFF_NORMED)
+
+# setting the threshold (matching accuracy)
+# for now this value is manually set
+# later on it will be read by an object from frontend
+threshold = 0.80
+
+# locating pixels only above the threshold matching
+loc = np.where( res>=threshold)  # setting condition
