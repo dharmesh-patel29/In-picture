@@ -23,3 +23,11 @@ im_gray = cv2.cvtColor(im_rgb, cv2.COLOR_BGR2GRAY)
 
 # reading the template in gray scale mode
 temp = cv2.imread('template.jpg', 0)
+
+# reading the width and height
+# using -1 to invert the output as the 
+# output comes in the format of h,w.
+w, h = temp.shape[::-1]
+
+# matching template
+res = cv2.matchTemplate(im_gray, temp, cv2.TM_CCOEFF_NORMED)
