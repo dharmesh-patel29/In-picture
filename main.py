@@ -39,3 +39,16 @@ threshold = 0.80
 
 # locating pixels only above the threshold matching
 loc = np.where( res>=threshold)  # setting condition
+
+
+# using zip, making w,h format for a point
+# then using for loop, going to each point
+# and drawing yellow boxes around them.
+
+# to get the dimension of the box: we will use
+# same dimensions of the template. We take a point
+# and the box will be of the same width and height
+# of that of the template.
+# also making boxes inside the original images (in-place)
+for pt in zip(*loc[::-1]):
+    cv2.rectangle(im_rgb, pt, (pt[0]+w, pt[1]+h), (0,255,255), 2)
