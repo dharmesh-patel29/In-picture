@@ -53,7 +53,12 @@ loc = np.where( res>=threshold)  # setting condition
 for pt in zip(*loc[::-1]):
     cv2.rectangle(im_rgb, pt, (pt[0]+w, pt[1]+h), (0,255,255), 2)
 
-cv2.imshow('Object found', im_rgb )
+# function to display the image containing object when needed
+def dispObj():
+    cv2.imshow('Object found', im_rgb)
+
+
+#dispObj()
 
 # below code stops the python kernel from crashing
 cv2.waitKey(0) 
