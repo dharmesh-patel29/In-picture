@@ -18,9 +18,9 @@ User can set the accuracy of the application in terms of percentage.
 
 ### Tools?
 
-Python:
-    1. OpenCV
-    2. Numpy
+    Python:
+        1. OpenCV
+        2. Numpy
 
 UI:
     1. KivyMD
