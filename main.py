@@ -2,6 +2,9 @@
 import cv2
 import numpy as np
 
+from kivy.lang import Builder
+from kivymd.app import MDApp
+
 # function to rename the uploaded original image
 # takes in the uploaded image as input and renames
 # def ogRename():
@@ -67,3 +70,20 @@ dispObj()
 cv2.waitKey(0) 
 
 cv2.destroyAllWindows()
+
+class MyApp(MDApp): 
+    
+
+
+
+    def build(self):
+        self.theme_cls.theme_style = "Light"
+        # loading my.kv file    # going to screenmanager
+        return  Builder.load_file("myapp.kv") 
+    
+
+
+
+# if its the main file, execute the following code
+if __name__ == "__main__":
+    MyApp().run()
