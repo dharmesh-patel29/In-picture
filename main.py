@@ -10,7 +10,7 @@ from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.widget import Widget
 from kivy.uix.image import Image
 
-import tempAcc
+import tempData
 
 
 # function to rename the uploaded original image
@@ -46,7 +46,7 @@ class MainScreen(Screen, MDApp):
     # gets the path of the file
     def select_path_main(self, path):
         
-        tempAcc.saveMain(path)
+        tempData.saveMain(path)
         
         #print(path)
         
@@ -55,7 +55,7 @@ class MainScreen(Screen, MDApp):
     # gets the path of the file
     def select_path_template(self, path):
         
-        tempAcc.saveTemplate(path)
+        tempData.saveTemplate(path)
         
         #print(path)
         
@@ -82,20 +82,20 @@ class MainScreen(Screen, MDApp):
     def store_accuracy(self):
         # store this accuracy in external file
         acc = self.ids["accuracy"].text
-        tempAcc.storeAccuracy(acc)
+        tempData.storeAccuracy(acc)
 
 
     # stores/writes/rewrites result into output.jpg
     def dispObj(self):
         # read the original image
-        im_rgb = cv2.imread(tempAcc.readMain())
+        im_rgb = cv2.imread(tempData.readMain())
 
         # convert the real image into Gray scale
         im_gray = cv2.cvtColor(im_rgb, cv2.COLOR_BGR2GRAY)
 
 
         # reading the template in gray scale mode
-        temp = cv2.imread(tempAcc.readTemplate(), 0)
+        temp = cv2.imread(tempData.readTemplate(), 0)
 
         # reading the width and height
         # using -1 to invert the output as the 
@@ -114,7 +114,7 @@ class MainScreen(Screen, MDApp):
 
 
         # str is stored in the text file. 
-        threshold = float(tempAcc.readAccuracy())/100
+        threshold = float(tempData.readAccuracy())/100
 
         #threshold = self.root.get_screen('main').ids.accuracy.text
 
@@ -147,6 +147,8 @@ class MainScreen(Screen, MDApp):
         # cv2.waitKey(0) 
 
         # cv2.destroyAllWindows()
+
+
 class ResultDisp(Screen):
 
     def on_enter(self):
