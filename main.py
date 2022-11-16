@@ -6,8 +6,11 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 
 from kivy.uix.screenmanager import Screen, ScreenManager
+from kivymd.uix.filemanager import MDFileManager
 
 import tempAcc
+
+
 # function to rename the uploaded original image
 # takes in the uploaded image as input and renames
 # def ogRename():
@@ -20,12 +23,35 @@ import tempAcc
 
 # OR? can we open the uploaded image directly 
 
+class MainScreen(Screen, MDApp):
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.file_manager_obj = MDFileManager(
+            select_path= self.select_path ,   # method of which window will open first
+            exit_manager= self.exit_manager, # method to exit the file manager
+            preview=True
 
+        )
 
-
-class MainScreen(Screen):
     
+    def uploadMain(self):
+        pass
+
+        
+
+    # gets the path of the file
+    def select_path(self, path):
+        print(path)
+        self.exit_manager()
+        
+    def open_file_manager(self):
+        # opening file manager
+        self.file_manager_obj.show('/')
+    
+    # method to close file manager
+    def exit_manager(self):
+        self.file_manager_obj.close()
     
     def store_accuracy(self):
         # store this accuracy in external file
