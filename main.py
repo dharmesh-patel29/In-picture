@@ -7,6 +7,8 @@ from kivymd.app import MDApp
 
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.filemanager import MDFileManager
+from kivymd.uix.widget import Widget
+from kivy.uix.image import Image
 
 import tempAcc
 
@@ -82,8 +84,8 @@ class MainScreen(Screen, MDApp):
         acc = self.ids["accuracy"].text
         tempAcc.storeAccuracy(acc)
 
-class ResultDisp(Screen):
- 
+
+    # stores/writes/rewrites result into output.jpg
     def dispObj(self):
         # read the original image
         im_rgb = cv2.imread(tempAcc.readMain())
@@ -123,7 +125,7 @@ class ResultDisp(Screen):
         # using zip, making w,h format for a point
         # then using for loop, going to each point
         # and drawing yellow boxes around them.
-
+        
 
 
         # function to display the image containing object when needed
@@ -137,12 +139,21 @@ class ResultDisp(Screen):
 
         # resizing the output image according to the MDcard
         ims = cv2.resize(im_rgb, (480,480))
-        cv2.imshow('Object found', ims)
+        #return cv2.imshow('Object found', ims)
         
-        # below code stops the python kernel from crashing
-        cv2.waitKey(0) 
+        cv2.imwrite('output.jpg', ims)
+        #return ims
+        # # below code stops the python kernel from crashing
+        # cv2.waitKey(0) 
 
-        cv2.destroyAllWindows()
+        # cv2.destroyAllWindows()
+class ResultDisp(Screen):
+
+    def on_enter(self):
+        self.output = Image(source='output.jpg')
+        self.ids.result.add_widget(self.output)
+    
+    
 
 sm = ScreenManager()
 
@@ -167,7 +178,7 @@ class MyApp(MDApp):
 
 #dispObj()
 
-# # below code stops the python kernel from crashing
+# # # below code stops the python kernel from crashing
 # cv2.waitKey(0) 
 
 # cv2.destroyAllWindows()
