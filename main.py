@@ -61,11 +61,13 @@ class MainScreen(Screen, MDApp):
         
     def open_file_manager_main(self):
         # opening file manager
-        self.file_manager_obj_main.show('/')
+        #self.file_manager_obj_main.show('/')
+        self.file_manager_obj_main.show("E:\\")
     
     def open_file_manager_template(self):
         # opening file manager
-        self.file_manager_obj_template.show('/')
+        #self.file_manager_obj_template.show('/')
+        self.file_manager_obj_template.show('E:\\')
     
     
     # method to close file manager
@@ -165,10 +167,10 @@ class MyApp(MDApp):
 
 #dispObj()
 
-# below code stops the python kernel from crashing
-cv2.waitKey(0) 
+# # below code stops the python kernel from crashing
+# cv2.waitKey(0) 
 
-cv2.destroyAllWindows()
+# cv2.destroyAllWindows()
 
 
 
