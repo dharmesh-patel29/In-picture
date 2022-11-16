@@ -27,31 +27,53 @@ class MainScreen(Screen, MDApp):
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.file_manager_obj = MDFileManager(
-            select_path= self.select_path ,   # method of which window will open first
-            exit_manager= self.exit_manager, # method to exit the file manager
+        self.file_manager_obj_main = MDFileManager(
+            select_path= self.select_path_main ,   # method of which window will open first
+            exit_manager= self.exit_manager_main, # method to exit the file manager
             preview=True
 
         )
 
-    
-    def uploadMain(self):
-        pass
+        self.file_manager_obj_template = MDFileManager(
+            select_path= self.select_path_template ,   # method of which window will open first
+            exit_manager= self.exit_manager_template, # method to exit the file manager
+            preview=True
 
-        
+        )
 
     # gets the path of the file
-    def select_path(self, path):
-        print(path)
-        self.exit_manager()
+    def select_path_main(self, path):
         
-    def open_file_manager(self):
+        tempAcc.saveMain(path)
+        
+        #print(path)
+        
+        self.exit_manager_main()
+
+    # gets the path of the file
+    def select_path_template(self, path):
+        
+        tempAcc.saveTemplate(path)
+        
+        #print(path)
+        
+        self.exit_manager_template()
+        
+    def open_file_manager_main(self):
         # opening file manager
-        self.file_manager_obj.show('/')
+        self.file_manager_obj_main.show('/')
+    
+    def open_file_manager_template(self):
+        # opening file manager
+        self.file_manager_obj_template.show('/')
+    
     
     # method to close file manager
-    def exit_manager(self):
-        self.file_manager_obj.close()
+    def exit_manager_main(self):
+        self.file_manager_obj_main.close()
+
+    def exit_manager_template(self):
+        self.file_manager_obj_template.close()
     
     def store_accuracy(self):
         # store this accuracy in external file
@@ -60,19 +82,16 @@ class MainScreen(Screen, MDApp):
 
 class ResultDisp(Screen):
  
-    
-
-    
     def dispObj(self):
         # read the original image
-        im_rgb = cv2.imread('real.jpg')
+        im_rgb = cv2.imread(tempAcc.readMain())
 
         # convert the real image into Gray scale
         im_gray = cv2.cvtColor(im_rgb, cv2.COLOR_BGR2GRAY)
 
 
         # reading the template in gray scale mode
-        temp = cv2.imread('template.jpg', 0)
+        temp = cv2.imread(tempAcc.readTemplate(), 0)
 
         # reading the width and height
         # using -1 to invert the output as the 
