@@ -5,6 +5,9 @@ import numpy as np
 from kivy.lang import Builder
 from kivymd.app import MDApp
 
+from kivy.uix.screenmanager import Screen, ScreenManager
+
+import tempAcc
 # function to rename the uploaded original image
 # takes in the uploaded image as input and renames
 # def ogRename():
@@ -17,59 +20,91 @@ from kivymd.app import MDApp
 
 # OR? can we open the uploaded image directly 
 
-# read the original image
-im_rgb = cv2.imread('real.jpg')
-
-# convert the real image into Gray scale
-im_gray = cv2.cvtColor(im_rgb, cv2.COLOR_BGR2GRAY)
 
 
-# reading the template in gray scale mode
-temp = cv2.imread('template.jpg', 0)
-
-# reading the width and height
-# using -1 to invert the output as the 
-# output comes in the format of h,w.
-w, h = temp.shape[::-1]
-
-# matching template
-res = cv2.matchTemplate(im_gray, temp, cv2.TM_CCOEFF_NORMED)
-
-# setting the threshold (matching accuracy)
-# for now this value is manually set
-# later on it will be read by an object from frontend
-threshold = 0.80
-
-# locating pixels only above the threshold matching
-loc = np.where( res>=threshold)  # setting condition
 
 
-# using zip, making w,h format for a point
-# then using for loop, going to each point
-# and drawing yellow boxes around them.
-
-# to get the dimension of the box: we will use
-# same dimensions of the template. We take a point
-# and the box will be of the same width and height
-# of that of the template.
-# also making boxes inside the original images (in-place)
-for pt in zip(*loc[::-1]):
-    cv2.rectangle(im_rgb, pt, (pt[0]+w, pt[1]+h), (0,255,255), 2)
-
-# function to display the image containing object when needed
-def dispObj():
+class MainScreen(Screen):
     
-    # resizing the output image according to the MDcard
-    ims = cv2.resize(im_rgb, (480,480))
-    cv2.imshow('Object found', ims)
+    
+    def store_accuracy(self):
+        # store this accuracy in external file
+        acc = self.ids["accuracy"].text
+        tempAcc.storeAccuracy(acc)
+
+class ResultDisp(Screen):
+ 
+    
+
+    
+    def dispObj(self):
+        # read the original image
+        im_rgb = cv2.imread('real.jpg')
+
+        # convert the real image into Gray scale
+        im_gray = cv2.cvtColor(im_rgb, cv2.COLOR_BGR2GRAY)
 
 
-dispObj()
+        # reading the template in gray scale mode
+        temp = cv2.imread('template.jpg', 0)
 
-# below code stops the python kernel from crashing
-cv2.waitKey(0) 
+        # reading the width and height
+        # using -1 to invert the output as the 
+        # output comes in the format of h,w.
+        w, h = temp.shape[::-1]
 
-cv2.destroyAllWindows()
+        # matching template
+        res = cv2.matchTemplate(im_gray, temp, cv2.TM_CCOEFF_NORMED)
+
+        # setting the threshold (matching accuracy)
+        # for now this value is manually set
+        # later on it will be read by an object from frontend
+        #threshold = 0.90
+
+        # reading threshold from the text input
+
+
+        # str is stored in the text file. 
+        threshold = float(tempAcc.readAccuracy())/100
+
+        #threshold = self.root.get_screen('main').ids.accuracy.text
+
+        # locating pixels only above the threshold matching
+        loc = np.where( res>=threshold)  # setting condition
+
+    
+        # using zip, making w,h format for a point
+        # then using for loop, going to each point
+        # and drawing yellow boxes around them.
+
+
+
+        # function to display the image containing object when needed
+        # to get the dimension of the box: we will use
+        # same dimensions of the template. We take a point
+        # and the box will be of the same width and height
+        # of that of the template.
+        # also making boxes inside the original images (in-place)
+        for pt in zip(*loc[::-1]):
+            cv2.rectangle(im_rgb, pt, (pt[0]+w, pt[1]+h), (0,255,255), 2)
+
+        # resizing the output image according to the MDcard
+        ims = cv2.resize(im_rgb, (480,480))
+        cv2.imshow('Object found', ims)
+        
+        # below code stops the python kernel from crashing
+        cv2.waitKey(0) 
+
+        cv2.destroyAllWindows()
+
+sm = ScreenManager()
+
+screens = [MainScreen(name= "main"),
+            ResultDisp(name= "result")]
+
+for i in screens:
+    sm.add_widget(i)
+
 
 class MyApp(MDApp): 
     
@@ -81,6 +116,15 @@ class MyApp(MDApp):
         # loading my.kv file    # going to screenmanager
         return  Builder.load_file("myapp.kv") 
     
+
+
+#dispObj()
+
+# below code stops the python kernel from crashing
+cv2.waitKey(0) 
+
+cv2.destroyAllWindows()
+
 
 
 
